@@ -1,0 +1,54 @@
+  home-assistant:
+    cap_drop:
+      - "AUDIT_CONTROL"
+      - "BLOCK_SUSPEND"
+      - "DAC_READ_SEARCH"
+      - "IPC_LOCK"
+      - "IPC_OWNER"
+      - "LEASE"
+      - "LINUX_IMMUTABLE"
+      - "MAC_ADMIN"
+      - "MAC_OVERRIDE"
+      - "NET_ADMIN"
+      - "NET_BROADCAST"
+      - "SYSLOG"
+      - "SYS_ADMIN"
+      - "SYS_BOOT"
+      - "SYS_MODULE"
+      - "SYS_NICE"
+      - "SYS_PACCT"
+      - "SYS_PTRACE"
+      - "SYS_RAWIO"
+      - "SYS_RESOURCE"
+      - "SYS_TIME"
+      - "SYS_TTY_CONFIG"
+      - "WAKE_ALARM"
+    container_name: "home-assistant"
+    devices:
+      - "/dev/ttyACM0:/dev/ttyACM0"
+    entrypoint:
+      - "/init"
+    environment:
+      - "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+      - "LANG=C.UTF-8"
+      - "S6_BEHAVIOUR_IF_STAGE2_FAILS=2"
+      - "S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0"
+      - "S6_CMD_WAIT_FOR_SERVICES=1"
+      - "S6_SERVICES_READYTIME=50"
+      - "UV_EXTRA_INDEX_URL=https://wheels.home-assistant.io/musllinux-index/"
+      - "S6_SERVICES_GRACETIME=240000"
+      - "UV_SYSTEM_PYTHON=true"
+      - "UV_NO_CACHE=true"
+    image: "homeassistant/home-assistant:latest"
+    ipc: "private"
+    logging:
+      driver: "json-file"
+      options: {}
+    networks:
+      - "homeassistant_network"
+    ports:
+      - "8999:8123/tcp"
+    restart: "unless-stopped"
+    volumes:
+      - "/volume1/docker/homeassistant/config:/config"
+    working_dir: "/config"
