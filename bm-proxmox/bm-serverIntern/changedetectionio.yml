@@ -1,0 +1,13 @@
+services:
+  changedetection:
+    image: lscr.io/linuxserver/changedetection.io:latest
+    container_name: changedetection
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /volume1/docker/changedetection.io/config:/config
+    ports:
+      - 5000:5000
+    restart: unless-stopped
